@@ -1,12 +1,18 @@
 const pgp = require('pg-promise')();
-const config = {
-	host: 'localhost',
-	port: '5432',
-	database: 'boilerplate1'
-};
-const db = pgp(config);
+const { dbConfig } = require('../config');
+const db = pgp(dbConfig);
 
 module.exports = {
+
+	getAllUsers() {
+		const sql = `
+			SELECT
+				*
+			FROM
+				users
+		`
+		return db.any(sql);
+	},
 
 	updateUser({ name, email, password, img_url }, id) {
 		const sql = `
@@ -20,7 +26,7 @@ module.exports = {
 			RETURNING
 				id
 		`
-		return this.db.one(sql, [name, email, password, img_url, id]);
+		return db.one(sql, [name, email, password, img_url, id]);
 	},
 
 	createUser({ name, email, img_url }, hash) {
@@ -32,7 +38,7 @@ module.exports = {
 			RETURNING
 				id, email
 		`
-		return this.db.one(sql, [name, email, hash, img_url]);
+		return db.one(sql, [name, email, hash, img_url]);
 	},
 
 	findUserByEmail(email) {
@@ -44,7 +50,7 @@ module.exports = {
 			WHERE
 				email = $1
 		`
-		return this.db.any(sql, [email]);
+		return db.any(sql, [email]);
 	}
 
 };
