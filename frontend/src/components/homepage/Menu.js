@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Modal from './auth/modal';
 import { connect } from 'react-redux';
 import { openModal } from '../../actions/modal_actions';
+import { signout } from '../../actions/auth_actions';
 
 class Menu extends React.Component {
 	constructor(props) {
@@ -10,14 +11,21 @@ class Menu extends React.Component {
 		console.log("Menu props => ", this.props);
 	}
 	render() {
+		const { currentUser } = this.props;
+		const log = currentUser ? (
+			<Button onClick={() => this.props.signout()} >Sign out</Button>
+		) : (
+			<div>
+				<Button>Demo User</Button>
+				<Button onClick={() => this.props.openModal('signin')}>Sign in</Button>
+				<Button onClick={() => this.props.openModal('signup')}>Sign up</Button>
+			</div>
+		);
 		return (
 			<div>
 				<Modal />
 				<MenuBar>
-					<Button>Sign out</Button>
-					<Button>Demo User</Button>
-					<Button onClick={() => this.props.openModal('signin')} >Sign in</Button>
-					<Button onClick={() => this.props.openModal('signup')} >Sign up</Button>
+					{log}
 				</MenuBar>
 			</div>
 		);
@@ -56,7 +64,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	openModal: modal => dispatch(openModal(modal))
+	openModal: modal => dispatch(openModal(modal)),
+	signout: () => dispatch(signout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

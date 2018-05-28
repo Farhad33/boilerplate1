@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { requestAllUsers } from '../../actions/user_actions';
 import { selectAllUsers } from '../../selectors/selectors';
+import Menu from '../homepage/Menu'
+
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -16,6 +18,7 @@ class Dashboard extends React.Component {
 	render() {
 		return (
 			<div>
+				<Menu />
 				Dashboard
 				{this.props.users.map((user) => (
 					<p key={user.id}>{user.email}</p>

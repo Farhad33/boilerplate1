@@ -25,6 +25,11 @@ export const signin = user => dispatch => (
 	})
 );
 
+export const signout = () => dispatch => {
+	deleteTokenUser()
+	dispatch(receiveCurrentUser(null))
+};
+
 function saveTokenUser(result) {
 	let { token, user } = result;
 	const storage = window.localStorage;
@@ -35,4 +40,10 @@ function saveTokenUser(result) {
 		user = JSON.stringify(user);
 		storage.setItem('currentUser', user);
 	}
+}
+
+function deleteTokenUser() {
+	const storage = window.localStorage;
+	storage.removeItem("currentUser");
+	storage.removeItem("token");
 }
